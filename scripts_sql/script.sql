@@ -84,8 +84,8 @@ create table aula_prof(
 
 create table turma(
 	id_turma int primary key auto_increment, 
-    desc_turma varchar(45)
-
+  desc_turma varchar(45),
+  observacao_turma varchar(200),
 );
 
 create table aula_turma(
