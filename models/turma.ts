@@ -22,15 +22,14 @@ export = class Turma {
                 return "Turma já existente";
             }
         }
-
       		
-		 return null;
+		return null;
 	}
 
 	public static async listar(): Promise<Turma[]>{
         let lista: Turma[] = null;
         await Sql.conectar(async (sql) =>{
-            lista = await sql.query("select id_turma, desc_turma, observacao_turma from turma");
+            lista = await sql.query("select id_turma, desc_turma from turma");
         });
         return lista;
 	}
@@ -72,7 +71,7 @@ export = class Turma {
         }
 
         await Sql.conectar(async(sql)=>{
-            await sql.query("update turma set desc_turma = ? where id_turma = ?",[turma.desc_turma, turma.id_turma]);
+            await sql.query("update turma set desc_turma = ?, observacao_turma = ? where id_turma = ?",[turma.desc_turma, turma.observacao_turma, turma.id_turma]);
 
             if(!sql.linhasAfetadas){
                 erro = 'Turma não encontrada';
