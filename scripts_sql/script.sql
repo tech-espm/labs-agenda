@@ -86,6 +86,7 @@ create table turma(
 	id_turma int primary key auto_increment, 
   desc_turma varchar(45),
   observacao_turma varchar(200),
+  UNIQUE KEY turma_desc_UN (desc_turma)
 );
 
 create table aula_turma(

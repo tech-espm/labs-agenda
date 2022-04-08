@@ -17,6 +17,7 @@
 			"linux": {
 				"program": "${workspaceFolder}/app.js",
 			},
+			"program": "${workspaceFolder}/app.js",
 			"outFiles": [
 				"${workspaceFolder}/**/*.js"
 			]

@@ -94,7 +94,7 @@ router.all("/calendario/:ano/:id_turma", wrap(async (req: express.Request, res: 
 		anoAtual: anoAtual,
 		id_turma: id_turma,
 		lista: await Aula.listarOcorrencias(id_turma, 0, anoAtual),
-		turmas: await Turma.listar()
+		turma: await Turma.obter(id_turma)
 	});	
 }));
 
