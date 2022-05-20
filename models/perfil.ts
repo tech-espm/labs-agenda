@@ -4,10 +4,12 @@ export = class Perfil {
 	public id: number;
 	public nome: string;
 
+
+
 	private static validar(p: Perfil): string {
 		p.nome = (p.nome || "").normalize().trim();
 		if (p.nome.length < 3 || p.nome.length > 50)
-			return "Nome inválido";
+			return "Nome inválide";
 
 		return null;
 	}

@@ -4,6 +4,7 @@ import DataUtil = require("../utils/dataUtil");
 export = class Turma {
 	public id_turma: number;
 	public desc_turma: string;
+    public observacao_turma: String;
 	
 	public static  async validar(turma: Turma):Promise<string> {
 		if(!turma){
@@ -12,20 +13,24 @@ export = class Turma {
 		if(!turma.desc_turma || turma.desc_turma.length>45){
 			return "Descrição inválida";
 		}
-        let lista = await Turma.listar();
-        for (var t of lista) {
-            if (turma.desc_turma === t.desc_turma)
-               return "Turma já existente"
-        }
-
+        if(!turma.observacao_turma || turma.observacao_turma.length>200){
+			return "Observação inválida";
+		}
+        
+        // let lista = await Turma.listar();
+        // for (var t of lista) {
+        //     if (turma.id_turma !== t.id_turma && turma.desc_turma === t.desc_turma){
+        //         return "Turma já existente";
+        //     }
+        // }
       		
-		 return null;
+		return null;
 	}
 
 	public static async listar(): Promise<Turma[]>{
         let lista: Turma[] = null;
         await Sql.conectar(async (sql) =>{
-            lista = await sql.query("select id_turma, desc_turma from turma");
+            lista = await sql.query("select id_turma, desc_turma, observacao_turma from turma");
         });
         return lista;
 	}
@@ -38,7 +43,21 @@ export = class Turma {
         }
 
         await Sql.conectar(async(sql)=>{
-            let lista = await sql.query("insert into turma (desc_turma) values (?)",[turma.desc_turma]);
+            try {
+				await sql.query("insert into turma (desc_turma, observacao_turma) values (?, ?)",[turma.desc_turma, turma.observacao_turma]);
+			} catch (e) {
+				if (e.code) {
+					switch (e.code) {
+						case "ER_DUP_ENTRY":
+							erro = `A turma ${turma.desc_turma} já existe`;
+							break;
+						default:
+							throw e;
+					}
+				} else {
+					throw e;
+				}
+			}
         });
 
         return erro;
@@ -48,7 +67,7 @@ export = class Turma {
         let turma: Turma = null;
 
         await Sql.conectar(async(sql)=>{
-            let lista = await sql.query("select id_turma, desc_turma from turma where id_turma = ?",[id_turma]);
+            let lista = await sql.query("select id_turma, desc_turma, observacao_turma from turma where id_turma = ?",[id_turma]);
          
             if(lista && lista.length){
                 turma = lista[0];
@@ -67,11 +86,25 @@ export = class Turma {
         }
 
         await Sql.conectar(async(sql)=>{
-            await sql.query("update turma set desc_turma = ? where id_turma = ?",[turma.desc_turma, turma.id_turma]);
+            try {
+				await sql.query("update turma set desc_turma = ?, observacao_turma = ? where id_turma = ?",[turma.desc_turma, turma.observacao_turma, turma.id_turma]);
 
-            if(!sql.linhasAfetadas){
-                erro = 'Turma não encontrada';
-            }
+                if(!sql.linhasAfetadas){
+                    erro = 'Turma não encontrada';
+                }
+			} catch (e) {
+				if (e.code) {
+					switch (e.code) {
+						case "ER_DUP_ENTRY":
+							erro = `A turma ${turma.desc_turma} já existe`;
+							break;
+						default:
+							throw e;
+					}
+				} else {
+					throw e;
+				}
+			}
         });
 
         return erro;

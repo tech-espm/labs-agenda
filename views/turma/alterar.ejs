@@ -11,6 +11,12 @@
 						<label for="desc_turma">Nome da turma</label>
 						<input id="desc_turma" name="desc_turma" maxlength="100" class="form-control" type="text" spellcheck="false" value="<%=(item ? item.desc_turma : '') %>" />
                     </div>
+					<div style = "
+						margin-bottom: 2.5vh;
+					" >
+						<label for="observacao_turma">observação</label>
+						<input id="observacao_turma" name="observacao_turma" maxlength="200" class="form-control" type="text" spellcheck="false" value="<%=(item ? item.observacao_turma : '') %>" />
+					</div>
 				</div>
 			</div>
 			<div class="panel-footer">
@@ -31,7 +37,11 @@
 				required: true,
 				minlength: 3,
 				maxlength: 100
-			}
+			},
+			observacao_turma:{
+				required: true,
+				maxlength: 200
+			},
 		},
 
 		submitHandler: function (form) {
