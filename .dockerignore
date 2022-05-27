@@ -1,0 +1,16 @@
+.git/
+.vscode/
+assets/
+docker/
+enums/
+models/
+node_modules/
+resources/uploads/
+routes/
+sql/
+utils/
+docker-compose.yml
+app.ts
+appsettings.ts
+README.md
+tsconfig.json

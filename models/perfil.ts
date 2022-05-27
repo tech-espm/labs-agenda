@@ -9,7 +9,7 @@ export = class Perfil {
 	private static validar(p: Perfil): string {
 		p.nome = (p.nome || "").normalize().trim();
 		if (p.nome.length < 3 || p.nome.length > 50)
-			return "Nome inválide";
+			return "Nome inválido";
 
 		return null;
 	}
